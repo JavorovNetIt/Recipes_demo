@@ -75,7 +75,7 @@ namespace Recipes.Data.Services
             {
                 string[] recipeLines = File.ReadAllLines(path);
 
-                string tempName = recipeLines[0].Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
+                string tempName = recipeLines[1].Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
 
                 if (tempName == name)
                 {

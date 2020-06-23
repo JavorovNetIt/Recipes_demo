@@ -93,7 +93,59 @@ namespace Recipes.Data.Services
 
         public void Save(Author model)
         {
-            throw new NotImplementedException();
+            model.ID = GenreteID();
+            model.DateCreated = DateTime.Now;
+
+            using (StreamWriter writer = new StreamWriter($"C:\\Recipes.FileDB\\Authors\\{model.Name}.txt"))
+            {
+                StringBuilder sb = new StringBuilder();
+                sb.AppendLine($"ID = {model.ID}");
+                sb.AppendLine($"Name = {model.Name}");
+                sb.AppendLine($"DateCreated = {model.DateCreated}");
+
+                writer.Write(sb.ToString());
+            }
+        }
+
+        private int GenreteID()
+        {
+            var txtFiles = Directory.EnumerateFiles(@"C:\Recipes.FileDB\Authors", "*.txt");
+
+            int maxID = int.MinValue;
+
+            foreach (var path in txtFiles)
+            {
+                string[] authorLines = File.ReadAllLines(path);
+
+                int tempID = int.Parse(authorLines[0].Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries)[1]);
+
+                if (maxID < tempID)
+                {
+                    maxID = tempID;
+                }
+            }
+
+            return maxID + 1;
+
+        }
+
+        public bool CheckNameUniqness(string name)
+        {
+            var txtFiles = Directory.EnumerateFiles(@"C:\Recipes.FileDB\Authors", "*.txt");
+
+            foreach (var path in txtFiles)
+            {
+                string[] authorLines = File.ReadAllLines(path);
+
+                string tempName = authorLines[1].Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries)[1].Trim();
+
+                if (tempName == name)
+                {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }

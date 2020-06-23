@@ -16,8 +16,8 @@ namespace Recipes_Demo
     public partial class RecipesListForm : Form
     {
         public BindingSource recipeBindingSource = new BindingSource();
-        AuthorFileService authorService = new AuthorFileService();
-        RecipeFileService recipeFileService = new RecipeFileService();
+        private AuthorFileService authorService = new AuthorFileService();
+        private RecipeFileService recipeFileService = new RecipeFileService();
         public RecipesListForm()
         {
             InitializeComponent();
@@ -68,7 +68,7 @@ namespace Recipes_Demo
         {
             Recipe recipe = new Recipe();
 
-            if (!recipeFileService.CheckNameUniqness(tbName.Text))
+            if (recipeFileService.CheckNameUniqness(tbName.Text))
             {
                 MessageBox.Show("Вече съществува рецепта с това име");
                 RefreshUIState();
